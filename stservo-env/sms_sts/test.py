@@ -25,7 +25,7 @@ def inverse_kinematics(v_x, v_y, w_z):
 # ==========================================
 DEVICENAME = "COM19"
 BAUDRATE   = 1000000
-MOTOR_IDS  = [9, 8, 7]
+MOTOR_IDS  = [9, 7, 8]
 
 portHandler = PortHandler(DEVICENAME)
 packetHandler = sms_sts(portHandler)
@@ -42,7 +42,7 @@ for servo_id in MOTOR_IDS:
 # 3. THIẾT LẬP VẬN TỐC ĐI THẲNG
 # ==========================================
 v_x_target = 0  # m/s (Đi thẳng)
-v_y_target = 0.13   # m/s
+v_y_target = -0.13   # m/s
 w_z_target = 0.0   # rad/s (Không xoay)
 
 u_wheels = inverse_kinematics(v_x_target, v_y_target, w_z_target)
@@ -51,7 +51,7 @@ print(f"Tốc độ góc tính toán [u1, u2, u3] (rad/s): {u_wheels}")
 # ==========================================
 # 4. GỬI TỐC ĐỘ ĐẾN ĐỘNG CƠ
 # ==========================================
-T_RUN = 3.0 # Thời gian chạy (giây)
+T_RUN = 2.0 # Thời gian chạy (giây)
 acc = 50
 
 for i, servo_id in enumerate(MOTOR_IDS):
@@ -71,6 +71,24 @@ for i, servo_id in enumerate(MOTOR_IDS):
 print(f"Xe đang di chuyển trong {T_RUN} giây...")
 time.sleep(T_RUN)
 
+
+u_wheels_1 = inverse_kinematics(0.2, 0, 0)
+for i, servo_id in enumerate(MOTOR_IDS):
+    u_rad_s_1 = u_wheels_1[i]
+    
+    # Quy đổi rad/s sang đơn vị Speed của STS (1 step/s ≈ 0.001534 rad/s)
+    speed_steps_1 = int(u_rad_s_1 * 4095 / (2 * np.pi))
+
+    # ĐỔI TỪ WriteSpe THÀNH WriteSpec
+    comm_result_1, error_1 = packetHandler.WriteSpec(servo_id, speed_steps_1, acc)
+
+    if comm_result_1 != COMM_SUCCESS:
+        print(f"Lỗi Servo {servo_id}: {packetHandler.getTxRxResult(comm_result_1)}")
+    else:
+        print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_1}")
+
+print(f"Xe đang di chuyển trong {T_RUN} giây...")
+time.sleep(T_RUN)
 # ==========================================
 # 5. DỪNG XE VÀ ĐÓNG CỔNG
 # ==========================================
