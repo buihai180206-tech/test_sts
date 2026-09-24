@@ -25,7 +25,7 @@ def inverse_kinematics(v_x, v_y, w_z):
 # ==========================================
 DEVICENAME = "/dev/ttyACM0"
 BAUDRATE   = 1000000
-MOTOR_IDS  = [9, 7, 8]
+MOTOR_IDS  = [8, 7, 9]
 
 portHandler = PortHandler(DEVICENAME)
 packetHandler = sms_sts(portHandler)
