@@ -42,7 +42,7 @@ for servo_id in MOTOR_IDS:
 # 3. THIẾT LẬP VẬN TỐC ĐI THẲNG
 # ==========================================
 v_x_target = 0  # m/s (Đi thẳng)
-v_y_target = -0.13   # m/s
+v_y_target = 0.2   # m/s
 w_z_target = 0.0   # rad/s (Không xoay)
 
 u_wheels = inverse_kinematics(v_x_target, v_y_target, w_z_target)
@@ -51,7 +51,7 @@ print(f"Tốc độ góc tính toán [u1, u2, u3] (rad/s): {u_wheels}")
 # ==========================================
 # 4. GỬI TỐC ĐỘ ĐẾN ĐỘNG CƠ
 # ==========================================
-T_RUN = 2.0 # Thời gian chạy (giây)
+T_RUN = 10.0 # Thời gian chạy (giây)
 acc = 50
 
 for i, servo_id in enumerate(MOTOR_IDS):
@@ -88,7 +88,60 @@ for i, servo_id in enumerate(MOTOR_IDS):
         print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_1}")
 
 print(f"Xe đang di chuyển trong {T_RUN} giây...")
-time.sleep(T_RUN)
+time.sleep(2)
+
+u_wheels_2 = inverse_kinematics(0.2, 0, 0)
+for i, servo_id in enumerate(MOTOR_IDS):
+    u_rad_s_2 = u_wheels_2[i]
+    
+    # Quy đổi rad/s sang đơn vị Speed của STS (1 step/s ≈ 0.001534 rad/s)
+    speed_steps_2 = int(u_rad_s_2 * 4095 / (2 * np.pi))
+
+    # ĐỔI TỪ WriteSpe THÀNH WriteSpec
+    comm_result_2, error_2 = packetHandler.WriteSpec(servo_id, speed_steps_2, acc)
+
+    if comm_result_2 != COMM_SUCCESS:
+        print(f"Lỗi Servo {servo_id}: {packetHandler.getTxRxResult(comm_result_2)}")
+    else:
+        print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_2}")
+
+print(f"Xe đang di chuyển trong {T_RUN} giây...")
+time.sleep(2)
+
+u_wheels_3 = inverse_kinematics(0, 0.2, 0)
+for i, servo_id in enumerate(MOTOR_IDS):
+    u_rad_s_3 = u_wheels_3[i]
+    
+    # Quy đổi rad/s sang đơn vị Speed của STS (1 step/s ≈ 0.001534 rad/s)
+    speed_steps_3 = int(u_rad_s_3 * 4095 / (2 * np.pi))
+
+    # ĐỔI TỪ WriteSpe THÀNH WriteSpec
+    comm_result_3, error_3 = packetHandler.WriteSpec(servo_id, speed_steps_3, acc)
+
+    if comm_result_3 != COMM_SUCCESS:
+        print(f"Lỗi Servo {servo_id}: {packetHandler.getTxRxResult(comm_result_3)}")
+    else:
+        print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_3}")
+
+print(f"Xe đang di chuyển trong {T_RUN} giây...")
+time.sleep(8)
+u_wheels_4 = inverse_kinematics(0.2, 0, 0)
+for i, servo_id in enumerate(MOTOR_IDS):
+    u_rad_s_4 = u_wheels_4[i]
+    
+    # Quy đổi rad/s sang đơn vị Speed của STS (1 step/s ≈ 0.001534 rad/s)
+    speed_steps_4 = int(u_rad_s_4 * 4095 / (2 * np.pi))
+
+    # ĐỔI TỪ WriteSpe THÀNH WriteSpec
+    comm_result_4, error_4 = packetHandler.WriteSpec(servo_id, speed_steps_4, acc)
+
+    if comm_result_4 != COMM_SUCCESS:
+        print(f"Lỗi Servo {servo_id}: {packetHandler.getTxRxResult(comm_result_4)}")
+    else:
+        print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_4}")
+
+print(f"Xe đang di chuyển trong {T_RUN} giây...")
+time.sleep(2)
 # ==========================================
 # 5. DỪNG XE VÀ ĐÓNG CỔNG
 # ==========================================
