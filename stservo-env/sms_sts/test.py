@@ -90,7 +90,7 @@ for i, servo_id in enumerate(MOTOR_IDS):
 print(f"Xe đang di chuyển trong {T_RUN} giây...")
 time.sleep(2)
 
-u_wheels_2 = inverse_kinematics(0.2, 0, 0)
+u_wheels_2 = inverse_kinematics(0, -0.2, 0)
 for i, servo_id in enumerate(MOTOR_IDS):
     u_rad_s_2 = u_wheels_2[i]
     
@@ -106,9 +106,9 @@ for i, servo_id in enumerate(MOTOR_IDS):
         print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_2}")
 
 print(f"Xe đang di chuyển trong {T_RUN} giây...")
-time.sleep(2)
+time.sleep(10)
 
-u_wheels_3 = inverse_kinematics(0, 0.2, 0)
+u_wheels_3 = inverse_kinematics(0, -0.2, 0)
 for i, servo_id in enumerate(MOTOR_IDS):
     u_rad_s_3 = u_wheels_3[i]
     
@@ -124,7 +124,7 @@ for i, servo_id in enumerate(MOTOR_IDS):
         print(f"Servo {servo_id} -> Speed (steps/s): {speed_steps_3}")
 
 print(f"Xe đang di chuyển trong {T_RUN} giây...")
-time.sleep(10)
+time.sleep(2)
 
 # ==========================================
 # 5. DỪNG XE VÀ ĐÓNG CỔNG
