@@ -23,7 +23,7 @@ def inverse_kinematics(v_x, v_y, w_z):
 # ==========================================
 # 2. CẤU HÌNH PHẦN CỨNG
 # ==========================================
-DEVICENAME = "COM19"
+DEVICENAME = "/dev/ttyACM0"
 BAUDRATE   = 1000000
 MOTOR_IDS  = [9, 7, 8]
 
